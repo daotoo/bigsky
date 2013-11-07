@@ -90,11 +90,14 @@ public class CalendarActivity extends Activity {
 	        	// return chosen date as string format 
 	        	intent.putExtra("date", android.text.format.DateFormat.format("yyyy-MM", month)+"-"+day);
 	        	setResult(RESULT_OK, intent);
+	        	Intent i = new Intent(CalendarActivity.this, CalendarInfo.class);
+	        	startActivity(i);
 	        	finish();
 	        }
 	        
 	    }
 	});
+	
 }
 
 public void refreshCalendar()
