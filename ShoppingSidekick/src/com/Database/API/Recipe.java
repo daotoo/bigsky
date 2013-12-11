@@ -1,4 +1,5 @@
 package com.Database.API;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -6,7 +7,7 @@ import java.util.ArrayList;
  * @author Sean Cavanaugh
  *
  */
-public class Recipe {
+public class Recipe implements Serializable{
 	
 	private String Name;
 	

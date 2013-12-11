@@ -41,6 +41,7 @@ public class SplashActivity extends Activity {
                 	}
                 }catch(InterruptedException e){};
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                finish();
                 SplashActivity.this.startActivity(intent);
             }
         };

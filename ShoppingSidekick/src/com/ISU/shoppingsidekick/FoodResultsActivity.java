@@ -1,9 +1,12 @@
 package com.ISU.shoppingsidekick;
 
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -14,11 +17,15 @@ import java.util.concurrent.Future;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
 import com.Database.API.Expiration;
 import com.Database.API.Food;
@@ -31,6 +38,7 @@ public class FoodResultsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_results);
+		final Account account = (Account) getIntent().getExtras().get("account");
 		
 		Bundle scanVal = null;
 		
@@ -38,10 +46,11 @@ public class FoodResultsActivity extends Activity {
 		scanVal = scannerValue.getExtras();
 		TextView productName = (TextView) findViewById(R.id.productName);
 		TextView productBrand = (TextView) findViewById(R.id.productBrand);
-		TextView productID = (TextView) findViewById(R.id.productID);
 		TextView expInformation = (TextView) findViewById(R.id.expInformation);
 		TextView priceInformation = (TextView) findViewById(R.id.priceInformation);
 		TextView reviewInformation = (TextView) findViewById(R.id.reviewInformation);
+		TextView notFound = (TextView) findViewById(R.id.itemNotFound);
+		notFound.setText("Item not found, please try again!");
 		String name = "";
 		String brand= "";
 		String id ="";
@@ -49,7 +58,6 @@ public class FoodResultsActivity extends Activity {
 		if(scanVal != null){		
 			final String scanValue = scanVal.getString("scanID");
 			ExecutorService pool = Executors.newFixedThreadPool(3);
-//			final String scanValue = "085239311189";
 			Callable task = new Callable(){
 				@Override
 				public Object call() throws Exception{
@@ -128,22 +136,35 @@ public class FoodResultsActivity extends Activity {
 				name = scannedFood.getName();
 				brand = scannedFood.getBrand();
 				id = scannedFood.getID();
-				productName.setText(name);
+				productName.setText("Product: " + name);
 				
-				productBrand.setText(brand);
+				productBrand.setText("Product brand: " + brand);
 				
-				productID.setText(id);
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(new Date());
+				cal.add(Calendar.HOUR_OF_DAY, (int) expirationInfo.getAvgHours());
+				Date d = cal.getTime();
+				String expirationDate = d.toString();
+				String year = expirationDate.substring(expirationDate.length() - 4);
+				String date = expirationDate.substring(0, 10);
+				expInformation.setText("If bought today, this item will expire around " + date + ", " + year);
 				
-				expInformation.setText("Average Expiration" + " " + expirationInfo.getAvgHours());
+				priceInformation.setText("Average Price: " + "$" + priceInfo.getAvgPrice());
 				
-				priceInformation.setText("Average Price" + " " + priceInfo.getAvgPrice());
+				String str = "Reviews:\n\n";
+				for(int i = 0; i < 3 && i < reviewInfo.size(); i++)
+				{
+					Review itemToAdd = reviewInfo.get(i);
+					str += itemToAdd != null ? itemToAdd.getReview() + "\n\n" : "";
+				}
+				reviewInformation.setText(str);
+				showButton();
 				
-				reviewInformation.setText("Review" + " " + reviewInfo.get(0).getReview());
 			}
 			else{
-				productName.setText("Item not found");
+				productName.setVisibility(View.INVISIBLE);
+				notFound.setVisibility(View.VISIBLE);
 				productBrand.setVisibility(View.INVISIBLE);
-				productID.setVisibility(View.INVISIBLE);
 				expInformation.setVisibility(View.INVISIBLE);
 				priceInformation.setVisibility(View.INVISIBLE);
 				reviewInformation.setVisibility(View.INVISIBLE);
@@ -151,31 +172,34 @@ public class FoodResultsActivity extends Activity {
 		}
 		
 		else{
-			productName.setText("Item not found");
+			productName.setVisibility(View.INVISIBLE);
+			notFound.setVisibility(View.VISIBLE);
 			productBrand.setVisibility(View.INVISIBLE);
-			productID.setVisibility(View.INVISIBLE);
 			expInformation.setVisibility(View.INVISIBLE);
 			priceInformation.setVisibility(View.INVISIBLE);
 			reviewInformation.setVisibility(View.INVISIBLE);
 		}	
-			
-		//confirmation button     
-//        Button goToScanBtn = (Button) findViewById(R.id.resultsToConfirmation);
-//        goToScanBtn.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent i = new Intent(FoodResultsActivity.this, FoodConfirmationActivity.class);
-//				startActivity(i);
-//			}
-//		});
         
-        //home button
-        Button goToFoodFinderBtn = (Button) findViewById(R.id.resultsToHome);
-        goToFoodFinderBtn.setOnClickListener(new View.OnClickListener() {
+        //add button to account
+        Button navBackHome = (Button) findViewById(R.id.addItem);
+        navBackHome.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
-				startActivity(i);
+				Thread thread = new Thread(){
+					@Override
+					public void run()
+					{
+						final String scanValue = getIntent().getExtras().getString("scanID");
+						DatabaseAPI database = new DatabaseAPI();
+						Food food = database.getFoodItemByID(scanValue);
+						database.addFoodItemToUserTable(account.getUserID(), food);
+						Intent i = new Intent(FoodResultsActivity.this, HomeActivity.class);
+						i.putExtra("account", account);
+						makeToast();
+						startActivity(i);
+					}
+				};
+				thread.start();
 			}
 		});
 	}
@@ -185,6 +209,32 @@ public class FoodResultsActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.food_results, menu);
 		return true;
+	}
+	
+	public void makeToast()
+	{
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable(){
+
+			@Override
+			public void run() {
+				Toast toast = Toast.makeText(getApplicationContext(), "Item added successfully!", Toast.LENGTH_SHORT);
+				toast.show();
+			}
+		});
+	}
+	
+	public void showButton()
+	{
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable(){
+
+			@Override
+			public void run() {
+				final Button navBackHome = ((Button) findViewById(R.id.addItem));
+				navBackHome.setVisibility(View.VISIBLE);
+			}
+		});
 	}
 
 }

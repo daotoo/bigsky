@@ -1,72 +1,114 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FoodResultsActivity" >
 
+    <TextView
+        android:id="@+id/itemNotFound"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/text_color"
+        android:text="Item not found, please try again!" 
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/productName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="productName"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/productBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="productBrand"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/priceInformation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="Price Information"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/expInformation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Expiration Information"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/reviewInformation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="review Information"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
+        </TableRow>
+    </TableLayout>
+
     <Button
-        android:id="@+id/resultsToHome"
-        android:layout_width="wrap_content"
+        android:id="@+id/addItem"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home" />
+        android:text="Add item to my account"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/reviewInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/resultsToHome"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="49dp"
-        android:text="reviewInformation" />
-
-    <TextView
-        android:id="@+id/priceInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/reviewInformation"
-        android:layout_alignLeft="@+id/reviewInformation"
-        android:layout_marginBottom="27dp"
-        android:text="priceInformation" />
-
-    <TextView
-        android:id="@+id/productID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/resultsToHome"
-        android:layout_below="@+id/resultsToConfirmation"
-        android:layout_marginTop="42dp"
-        android:text="productID" />
-
-    <TextView
-        android:id="@+id/productName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/productID"
-        android:layout_below="@+id/productID"
-        android:layout_marginTop="38dp"
-        android:text="productName" />
-
-    <TextView
-        android:id="@+id/productBrand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/productName"
-        android:layout_below="@+id/productName"
-        android:layout_marginTop="43dp"
-        android:text="productBrand" />
-
-
-    <TextView
-        android:id="@+id/expInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/resultsToConfirmation"
-        android:layout_below="@+id/productBrand"
-        android:layout_marginTop="16dp"
-        android:text="expInformation" />
-
-</RelativeLayout>
+</LinearLayout>

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.Database.API.Account;
 import com.Database.API.DatabaseAPI;
 import com.Database.API.Food;
 
@@ -40,6 +41,7 @@ public class FoodFinderActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		final Account a = (Account) getIntent().getExtras().get("account");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_food_finder);
 		listItems = new ArrayList<String>();
@@ -54,6 +56,7 @@ public class FoodFinderActivity extends Activity {
 					Food food = searchResults.get(position);
 					Intent i = new Intent(FoodFinderActivity.this, FoodResultsActivity.class);
 					i.putExtra("scanID", food.getID());
+					i.putExtra("account", a);
 					startActivity(i);
 				}
 			}
@@ -126,7 +129,7 @@ public class FoodFinderActivity extends Activity {
 		String st = "";
 		searchField = (EditText)findViewById(R.id.searchField);
 		if(searchField.length() > 0)
-			return searchField.getText().toString();
+			return searchField.getText().toString().trim();
 		else
 			st = "";
 		return st;

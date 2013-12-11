@@ -17,6 +17,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.Database.API.Account;
@@ -30,6 +32,8 @@ public class CalendarActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		final Account a = (Account) getIntent().getExtras().get("account");
 		
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.calendar);
@@ -89,6 +93,8 @@ public class CalendarActivity extends Activity {
 	        	intent.putExtra("date", android.text.format.DateFormat.format("yyyy-MM", month)+"-"+day);
 	        	setResult(RESULT_OK, intent);
 	        	Intent i = new Intent(CalendarActivity.this, CalendarInfo.class);
+	        	i.putExtras(intent);
+	        	i.putExtra("account", a);       	
 				startActivity(i);
 			}
 	        	finish();
@@ -99,10 +105,9 @@ public class CalendarActivity extends Activity {
 public void refreshCalendar()
 {
 	TextView title  = (TextView) findViewById(R.id.title);
-	
 	adapter.refreshDays();
 	adapter.notifyDataSetChanged();				
-	handler.post(calendarUpdater); // generate some random calendar items
+	handler.post(calendarUpdater); 
 	
 	title.setText(android.text.format.DateFormat.format("MMMM yyyy", month));
 }
@@ -116,6 +121,7 @@ Boolean flag = true;
 ArrayList<CalendarItem> itemsList;
 public Runnable calendarUpdater = new Runnable() {
 	
+	
 	@Override
 	public void run() {
 		Thread thread = new Thread()
@@ -125,13 +131,12 @@ public Runnable calendarUpdater = new Runnable() {
 			{
 				synchronized(this)
 				{
-					
+										
 					DatabaseAPI api = new DatabaseAPI();
-					Account account = api.getAccountInfoByUserID("Daotoo");
-					itemsList = (ArrayList<CalendarItem>) api.getUsersItems(account.getUserID());
+					final Account a = (Account) getIntent().getExtras().get("account");
+					itemsList = (ArrayList<CalendarItem>) api.getUsersItems(a.getUserID());
 					flag = false;
 				};
-				
 			}
 		};
 		
@@ -142,20 +147,7 @@ public Runnable calendarUpdater = new Runnable() {
 	}
 };
 
-//Override the onKeyDown method  
-@Override  
-public boolean onKeyDown(int keyCode, KeyEvent event)  
-{  
-    //replaces the default 'Back' button action  
-    if(keyCode==KeyEvent.KEYCODE_BACK)  
-    {  
-      
-        this.startActivity(new Intent(CalendarActivity.this, HomeActivity.class));  
-    }  
-    return true;  
-}  
-
-
+ 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

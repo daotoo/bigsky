@@ -3,7 +3,6 @@
     package="com.ISU.shoppingsidekick"
     android:versionCode="1"
     android:versionName="1.0" >
-
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="18" />
@@ -11,6 +10,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission." />
 
     <application
         android:allowBackup="true"
@@ -24,39 +25,43 @@
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.ScanActivity"
-            android:label="@string/title_activity_scan" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.FoodFinderActivity"
-            android:label="@string/title_activity_food_finder" >
+            android:label="@string/app_name"
+            android:theme="@style/ListFont" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.RecentActionsActivity"
-            android:label="@string/title_activity_recent_actions" >
+            android:label="@string/app_name"
+            android:theme="@style/ListFont" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.RecipesActivity"
-            android:label="@string/title_activity_recipes" >
+            android:label="@string/app_name"
+            android:theme="@style/ListFont" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.FoodResultsActivity"
-            android:label="@string/title_activity_food_results" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.CalendarActivity"
-            android:label="@string/title_activity_calendar" >
+            android:label="@string/app_name"
+             >
         </activity>
         <activity
             android:name="com.ISU.shoppingsidekick.FoodConfirmationActivity"
-            android:label="@string/title_activity_food_confirmation" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
@@ -78,7 +83,7 @@
         <activity
             android:name="com.ISU.shoppingsidekick.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_splash"
+            android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,13 +91,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.ISU.shoppingsidekick.CalendarInfo"
-            android:label="@string/title_activity_calendar_info" >
+            android:label="@string/app_name"
+            android:parentActivityName="com.ISU.shoppingsidekick.CalendarActivity"
+            android:theme="@style/ListFont">
+            
+            <meta-data
+      		 	android:name="android.support.PARENT_ACTIVITY"
+       			android:value="PARENT_ACTIVITY_PATH" />
         </activity>
+        
         <activity
             android:name="com.ISU.shoppingsidekick.LogInActivity"
-            android:label="@string/title_activity_log_in" >
+            android:label="@string/app_name" >
         </activity>
     </application>
 

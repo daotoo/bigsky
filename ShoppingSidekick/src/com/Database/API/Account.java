@@ -1,10 +1,13 @@
 package com.Database.API;
+
+import java.io.Serializable;
+
 /**
 	 * Container class for the Account table
 	 * @author Sean Cavanaugh
 	 *
 	 */
-	public class Account
+	public class Account implements Serializable
 	{
 		/**
 		 * Notifications for the row

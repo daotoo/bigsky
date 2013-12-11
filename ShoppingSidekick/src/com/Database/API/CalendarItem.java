@@ -23,6 +23,18 @@ import java.sql.Date;
 		 */
 		private Date DateExpired;
 		
+		
+		private int ID;
+		
+		public int getID()
+		{
+			return ID;
+		}
+		
+		public void setID(int ID)
+		{
+			this.ID = ID;
+		}
 		/**
 		 * Setter method for Food
 		 * @param food The food object to be set to

@@ -50,6 +50,17 @@ public class DatabaseAPI {
 	
 	//Public get methods
 	
+	public void removeCalendarItem(String UserID, int ID)
+	{
+		try {
+			PreparedStatement ps = connection.prepareStatement("DELETE FROM " + UserID + "Table WHERE ID = ?");
+			ps.setInt(1, ID);
+			ps.execute();
+		} catch (SQLException e) {
+			System.out.println("There was an error in the getRecipeByName method. Error message: " + e.getMessage());
+		}
+	}
+	
 	/**
 	 * Gets a recipe with the given name
 	 * @param Name Name to loop for
@@ -340,7 +351,8 @@ public class DatabaseAPI {
 			while(rs.next())
 			{
 				CalendarItem calendarItem = new CalendarItem();
-				calendarItem.setDateExpired(rs.getDate("DateExpired"));
+				calendarItem.setID(rs.getInt("ID"));
+				calendarItem.setDateStarted(rs.getDate("DateEntered"));;
 				calendarItem.setDateExpired(rs.getDate("DateExpired"));
 				calendarItem.setFood(getFoodItemByID(rs.getString("FoodID")));
 				calendarItems.add(calendarItem);

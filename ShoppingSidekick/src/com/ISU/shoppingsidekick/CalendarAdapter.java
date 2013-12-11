@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CalendarAdapter extends BaseAdapter {
@@ -100,6 +101,7 @@ public class CalendarAdapter extends BaseAdapter {
        
         // show icon if date is not empty and it exists in the items array
         ImageView iw = (ImageView)v.findViewById(R.id.date_icon);
+        iw.setVisibility(View.INVISIBLE);
         if(date.length()>0 && itemNums!=null && itemNums.contains(date)) {        	
         	iw.setVisibility(View.VISIBLE);
         }
@@ -110,17 +112,22 @@ public class CalendarAdapter extends BaseAdapter {
     }
     
     public int getDayFromDate(Date date){
-    		myCal.setTime(date);
-    		int day = myCal.get(Calendar.DAY_OF_MONTH);
-   
+    	int day = 0;
+    	Calendar cal = Calendar.getInstance();
+    	Date d = month.getTime();
+    	cal.setTime(d);
+    	myCal.setTime(date);
+    	if(myCal.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && myCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR)){
+    		day = myCal.get(Calendar.DAY_OF_MONTH);  
+    		}
 		return day;
     	
 }
+
     public void refreshDays()
     {
     	// clear items
-    	itemNums.clear();
-    	
+    	itemNums.clear();	
     	int lastDay = month.getActualMaximum(Calendar.DAY_OF_MONTH);
         int firstDay = (int)month.get(Calendar.DAY_OF_WEEK);
         
