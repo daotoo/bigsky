@@ -14,7 +14,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recently Scanned:" 
+        android:text="Recently scanned/added items:" 
         android:textColor="@color/text_color"
         android:textSize="20sp"
         android:layout_marginBottom="15dp"/>
