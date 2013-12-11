@@ -1,5 +1,10 @@
 package com.ISU.shoppingsidekick;
 
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +85,50 @@ public class FoodResultsActivity extends Activity {
 			}
 			
 			if(scannedFood.getID() != null){
+				
+				FileOutputStream fout;
+				try {
+					fout = openFileOutput("recentsFile.txt",MODE_APPEND);
+					OutputStreamWriter osw = new OutputStreamWriter(fout);
+					osw.append(scannedFood.getName());
+					osw.append("\r");
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+//				PrintWriter writer;
+//				try {
+//					writer = new PrintWriter("recentsFile.txt","UTF-8");
+//					writer.println(scannedFood.getID());
+//					writer.close();
+//				} catch (FileNotFoundException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (UnsupportedEncodingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+				
+				
+//				File file = new File("recentsFile.txt");
+//				try{
+//					FileWriter fw = new FileWriter(file.getAbsoluteFile());
+//					BufferedWriter bw = new BufferedWriter(fw);
+//					bw.write(scannedFood.getID());
+//					bw.newLine();
+//					
+//				}
+//				catch(IOException e){
+//					e.printStackTrace();
+//				}
+				
 				Expiration expirationInfo = scannedFood.getExpirationInformation();
 				Price priceInfo = scannedFood.getPriceInformation();
 				List<Review> reviewInfo = scannedFood.getReviewInformation();
